@@ -1,0 +1,62 @@
+{
+  "solver": {
+    "name": "cbc",
+    "time_limit_seconds": 300,
+    "threads": 2,
+    "gap_tolerance": 0.01
+  },
+  "objectives": {
+    "primary": "minimize_total_cost",
+    "secondary": "maximize_coverage",
+    "tertiary": "minimize_travel_time"
+  },
+  "constraints": {
+    "fairness": {
+      "enabled": true,
+      "minimum_allocation_ratio": 0.8,
+      "protected_groups": ["elderly", "families_with_children", "disabled"]
+    },
+    "capacity": {
+      "enforce_hard_limits": true,
+      "overflow_threshold": 0.95,
+      "buffer_percentage": 0.05
+    },
+    "routing": {
+      "max_travel_time_minutes": 45,
+      "max_stops_per_route": 12,
+      "vehicle_capacity": 500
+    }
+  },
+  "prediction": {
+    "horizon_days": 7,
+    "confidence_interval": 0.95,
+    "retrain_frequency": "weekly",
+    "anomaly_threshold_sigma": 2.0
+  },
+  "resources": {
+    "shelters": {
+      "optimization_window_hours": 24,
+      "reallocation_trigger": 0.85
+    },
+    "food_banks": {
+      "optimization_window_hours": 48,
+      "spoilage_threshold_hours": 72
+    },
+    "vehicles": {
+      "fleet_size": 5,
+      "optimization_window_hours": 12,
+      "fuel_efficiency_factor": 0.8
+    }
+  },
+  "alerts": {
+    "capacity_warning": 0.85,
+    "capacity_critical": 0.95,
+    "demand_spike_sigma": 2.0,
+    "solver_failure": true
+  },
+  "logging": {
+    "level": "INFO",
+    "audit_trail": true,
+    "retention_days": 90
+  }
+}
