@@ -1,0 +1,8 @@
+{
+  "keys": {},
+  "plans": {
+    "FREE": { "features": ["basic"] },
+    "PRO": { "features": ["basic", "multi-user", "team", "vector-search"] },
+    "UNI": { "features": ["basic", "multi-user", "team", "vector-search", "lms"] }
+  }
+}

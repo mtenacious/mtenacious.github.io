@@ -320,7 +320,38 @@
       const hex = Math.abs(hash).toString(16).padStart(8, '0');
       const ts = Date.now().toString(36);
       const planCode = plan === 'free' ? 'FREE' : plan === 'pro' ? 'PRO' : 'UNI';
-      return 'UW-' + planCode + '-' + hex + '-' + ts + '-' + hex.split('').reverse().join('');
+      const key = 'UW-' + planCode + '-' + hex + '-' + ts + '-' + hex.split('').reverse().join('');
+
+      // Save to Supabase for server-side validation
+      saveLicenseToServer(key, email, plan);
+
+      return key;
+    }
+
+    // Supabase config — replace with your Supabase URL and anon key
+    const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+    const SUPABASE_KEY = 'YOUR_ANON_KEY';
+
+    async function saveLicenseToServer(key, email, plan) {
+      try {
+        await fetch(SUPABASE_URL + '/rest/v1/licenses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+          },
+          body: JSON.stringify({
+            license_key: key,
+            email: email,
+            plan: plan,
+            created_at: new Date().toISOString(),
+            active: true,
+          }),
+        });
+      } catch (err) {
+        console.log('Server save failed (offline mode):', err);
+      }
     }
 
     function showTab(tab) {
