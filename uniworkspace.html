@@ -319,7 +319,8 @@
       }
       const hex = Math.abs(hash).toString(16).padStart(8, '0');
       const ts = Date.now().toString(36);
-      return 'UW-' + plan.toUpperCase().slice(0, 3) + '-' + hex + '-' + ts + '-' + hex.split('').reverse().join('');
+      const planCode = plan === 'free' ? 'FREE' : plan === 'pro' ? 'PRO' : 'UNI';
+      return 'UW-' + planCode + '-' + hex + '-' + ts + '-' + hex.split('').reverse().join('');
     }
 
     function showTab(tab) {
